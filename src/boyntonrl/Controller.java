@@ -17,11 +17,14 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller class for the Dot 2 Dot Generator application
  */
 public class Controller {
+
+    private Logger LOGGER = Dot2Dot.LOGGER;
 
     @FXML
     private MenuItem openMenuItem;
@@ -42,8 +45,7 @@ public class Controller {
                 new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            image = ImageIO.read(file);
-            imageView.setImage(image);
+
         } else {
             LOGGER.log(Level.INFO, "User canceled loading image");
         }
@@ -51,6 +53,7 @@ public class Controller {
 
     @FXML
     private void close(ActionEvent e) {
+        LOGGER.log(Level.INFO, "User closed the program");
         Platform.exit();
     }
 

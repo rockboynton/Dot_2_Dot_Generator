@@ -12,4 +12,18 @@ package boyntonrl;
  * Represents a dot in the picture.
  */
 public class Dot {
+
+    private double x;
+    private double y;
+
+    /**
+     * Constructor for a Dot
+     * @param x The horizontal component of the dot
+     * @param y The vertical component of the dot.
+     */
+    public Dot(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
 }
