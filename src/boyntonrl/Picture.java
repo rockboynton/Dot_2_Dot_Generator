@@ -8,18 +8,16 @@
 
 package boyntonrl;
 
-import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +26,11 @@ import java.util.logging.Logger;
  * Holds a list of Dots that describe a picture.
  */
 public class Picture {
+
+    /**
+     * Size of the dots
+     */
+    public static final int DOT_SIZE = 5;
 
     private Logger LOGGER = Dot2Dot.LOGGER;
 
@@ -44,8 +47,10 @@ public class Picture {
 
         try (Scanner fileIn = new Scanner(file)) {
             while (fileIn.hasNextLine()) {
-                x = fileIn.nextDouble();
-                y = fileIn.nextDouble();
+                List<String> xAndY = Arrays.asList(fileIn.nextLine().split(","));
+                x = Double.valueOf(xAndY.get(0)) * Controller.CANVAS_WIDTH;
+                y = Math.abs(Double.valueOf(xAndY.get(1)) * Controller.CANVAS_HEIGHT -
+                        Controller.CANVAS_HEIGHT); // not sure why the Y values are inverted
                 dots.add(new Dot(x, y));
             }
         } catch (IOException ioe) {
@@ -59,7 +64,14 @@ public class Picture {
      * @param canvas the canvas to draw dots
      */
     public void drawDots(Canvas canvas) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
 
+        for (Dot dot : dots) {
+            gc.setFill(Color.BLACK);
+            //centers oval on dot and fills it to a diameter of DOT_SIZE
+            gc.fillOval(dot.getX() - DOT_SIZE / 2.0, dot.getY() - DOT_SIZE / 2.0, DOT_SIZE,
+                    DOT_SIZE);
+        }
     }
 
     /**
@@ -67,6 +79,17 @@ public class Picture {
      * @param canvas the canvas to draw the lines
      */
     public void drawLines(Canvas canvas) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        gc.beginPath();
+        for (int i = 0; i < dots.size() - 1; i++) {
+            Dot dot1 = dots.get(i);
+            Dot dot2 = dots.get(i + 1);
+            gc.moveTo(dot1.getX(), dot1.getY());
+            gc.lineTo(dot2.getX(), dot2.getY());
+        }
+        gc.closePath();
+        gc.stroke();
 
     }
 
@@ -77,5 +100,14 @@ public class Picture {
         readFailureAlert.setHeaderText("Read Failure");
         readFailureAlert.showAndWait();
     }
+
+    private static void showUnsupportedFileTypeAlert() {
+        Alert unsupportedFileTypeAlert = new Alert(Alert.AlertType.ERROR, "Error: " +
+                "the file attempted to load could not be opened");
+        unsupportedFileTypeAlert.setTitle("Error Dialog");
+        unsupportedFileTypeAlert.setHeaderText("Invalid file type ");
+        unsupportedFileTypeAlert.showAndWait();
+    }
+
 
 }

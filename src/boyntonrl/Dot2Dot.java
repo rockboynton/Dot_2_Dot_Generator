@@ -30,7 +30,7 @@ public class Dot2Dot extends Application {
     /**
      * Logger for the Dot-to-Dot generator program
      */
-    public static Logger LOGGER;
+    public static final Logger LOGGER = Logger.getLogger(Dot2Dot.class.getName());
 
     private static final int WIDTH = 600;
     private static final int HEIGHT = 600;
@@ -44,6 +44,7 @@ public class Dot2Dot extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         setUpLogger();
+        LOGGER.info("User opened program");
 
         FXMLLoader primaryLoader = new FXMLLoader();
         Parent primaryRoot = primaryLoader.load(getClass().getResource("main.fxml").
@@ -52,20 +53,17 @@ public class Dot2Dot extends Application {
         primaryStage.setScene(new Scene(primaryRoot, WIDTH, HEIGHT));
         primaryStage.setResizable(false);
         primaryStage.show();
-
-        Controller controller = primaryLoader.getController();
     }
-
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    private void setUpLogger() {
+    private static void setUpLogger() {
         LOGGER.setUseParentHandlers(false);
         try {
             FileHandler fh = new FileHandler(System.getProperty("user.dir") +
-                    File.separator + "Dot2Dot.txt", true);
+                    File.separator + "d2d.txt", true);
             LOGGER.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

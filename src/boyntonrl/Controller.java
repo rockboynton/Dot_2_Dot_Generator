@@ -25,6 +25,17 @@ import java.util.logging.Logger;
 public class Controller {
 
     private Logger LOGGER = Dot2Dot.LOGGER;
+    /**
+     * Width of canvas
+     */
+    public static final int CANVAS_WIDTH = 600;
+
+    /**
+     * Height of canvas
+     */
+    public static final int CANVAS_HEIGHT = 600;
+
+    private Picture picture;
 
     @FXML
     private MenuItem openMenuItem;
@@ -45,7 +56,11 @@ public class Controller {
                 new FileChooser.ExtensionFilter("Dot Files", "*.dot"));
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-
+            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            picture = new Picture();
+            picture.load(file);
+            picture.drawLines(canvas);
+            picture.drawDots(canvas);
         } else {
             LOGGER.log(Level.INFO, "User canceled loading image");
         }
@@ -59,11 +74,17 @@ public class Controller {
 
     @FXML
     private void setLinesOnly(ActionEvent e) {
-
+        if (picture != null) {
+            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            picture.drawLines(canvas);
+        }
     }
 
     @FXML
     private void setDotsOnly(ActionEvent e) {
-
+        if (picture != null) {
+            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            picture.drawDots(canvas);
+        }
     }
 }
