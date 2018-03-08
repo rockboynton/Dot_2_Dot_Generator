@@ -33,7 +33,6 @@ public class Picture {
     public static final int DOT_SIZE = 5;
 
     private Logger LOGGER = Dot2Dot.LOGGER;
-
     private ArrayList<Dot> dots = new ArrayList<>();
 
     /**
@@ -41,21 +40,29 @@ public class Picture {
      * @param file the dot file to load in dots
      */
     public void load(File file) {
-
         double x;
         double y;
 
         try (Scanner fileIn = new Scanner(file)) {
             while (fileIn.hasNextLine()) {
+                // create an array out of the read line: the first element is the x value, the
+                // second element is the y value
                 List<String> xAndY = Arrays.asList(fileIn.nextLine().split(","));
+                if (xAndY.size() != 2) { // This would mean file is formatted incorrectly
+                    throw new NumberFormatException();
+                }
                 x = Double.valueOf(xAndY.get(0)) * Controller.CANVAS_WIDTH;
                 y = Math.abs(Double.valueOf(xAndY.get(1)) * Controller.CANVAS_HEIGHT -
                         Controller.CANVAS_HEIGHT); // not sure why the Y values are inverted
                 dots.add(new Dot(x, y));
+                LOGGER.info("User successfully loaded image" + file.getPath());
             }
         } catch (IOException ioe) {
             showReadFailureAlert();
             LOGGER.log(Level.WARNING, "Could not open .dot file", ioe);
+        } catch (NumberFormatException nfe) {
+            showReadFailureAlert();
+            LOGGER.log(Level.WARNING, "Could not open .dot file", nfe);
         }
     }
 

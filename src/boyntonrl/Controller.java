@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 public class Controller {
 
     private Logger LOGGER = Dot2Dot.LOGGER;
+
     /**
      * Width of canvas
      */
@@ -38,15 +39,7 @@ public class Controller {
     private Picture picture;
 
     @FXML
-    private MenuItem openMenuItem;
-    @FXML
-    private MenuItem closeMenuItem;
-    @FXML
     private Canvas canvas;
-    @FXML
-    private MenuItem linesOnly;
-    @FXML
-    private MenuItem dotsOnly;
 
     @FXML
     private void open(ActionEvent e) {
@@ -85,6 +78,15 @@ public class Controller {
         if (picture != null) {
             canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             picture.drawDots(canvas);
+        }
+    }
+
+    @FXML
+    private void setDotsAndLines(ActionEvent e) {
+        if (picture != null) {
+            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            picture.drawDots(canvas);
+            picture.drawLines(canvas);
         }
     }
 }
