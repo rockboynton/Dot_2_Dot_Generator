@@ -32,7 +32,7 @@ public class Picture {
      */
     public static final int DOT_SIZE = 5;
 
-    private Logger LOGGER = Dot2Dot.LOGGER;
+    private static final Logger LOGGER = Dot2Dot.LOGGER;
     private ArrayList<Dot> dots = new ArrayList<>();
 
     /**
@@ -51,9 +51,9 @@ public class Picture {
                 if (xAndY.size() != 2) { // This would mean file is formatted incorrectly
                     throw new NumberFormatException();
                 }
-                x = Double.valueOf(xAndY.get(0)) * Controller.CANVAS_WIDTH;
-                y = Math.abs(Double.valueOf(xAndY.get(1)) * Controller.CANVAS_HEIGHT -
-                        Controller.CANVAS_HEIGHT); // not sure why the Y values are inverted
+                x = Double.valueOf(xAndY.get(0)) * Dot2DotController.CANVAS_WIDTH;
+                y = Math.abs(Double.valueOf(xAndY.get(1)) * Dot2DotController.CANVAS_HEIGHT -
+                        Dot2DotController.CANVAS_HEIGHT); // not sure why the Y values are inverted
                 dots.add(new Dot(x, y));
                 LOGGER.info("User successfully loaded image" + file.getPath());
             }
@@ -107,14 +107,5 @@ public class Picture {
         readFailureAlert.setHeaderText("Read Failure");
         readFailureAlert.showAndWait();
     }
-
-    private static void showUnsupportedFileTypeAlert() {
-        Alert unsupportedFileTypeAlert = new Alert(Alert.AlertType.ERROR, "Error: " +
-                "the file attempted to load could not be opened");
-        unsupportedFileTypeAlert.setTitle("Error Dialog");
-        unsupportedFileTypeAlert.setHeaderText("Invalid file type ");
-        unsupportedFileTypeAlert.showAndWait();
-    }
-
 
 }

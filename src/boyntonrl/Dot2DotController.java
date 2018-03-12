@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -20,11 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Controller class for the Dot 2 Dot Generator application
+ * Dot2DotController class for the Dot 2 Dot Generator application
  */
-public class Controller {
+public class Dot2DotController {
 
-    private Logger LOGGER = Dot2Dot.LOGGER;
+    private static final Logger LOGGER = Dot2Dot.LOGGER;
 
     /**
      * Width of canvas

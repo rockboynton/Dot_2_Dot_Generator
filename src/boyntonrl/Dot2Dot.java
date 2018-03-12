@@ -47,7 +47,7 @@ public class Dot2Dot extends Application {
         LOGGER.info("User opened program");
 
         FXMLLoader primaryLoader = new FXMLLoader();
-        Parent primaryRoot = primaryLoader.load(getClass().getResource("main.fxml").
+        Parent primaryRoot = primaryLoader.load(getClass().getResource("Dot2Dot.fxml").
                 openStream());
         primaryStage.setTitle("Dot 2 Dot Generator");
         primaryStage.setScene(new Scene(primaryRoot, WIDTH, HEIGHT));
