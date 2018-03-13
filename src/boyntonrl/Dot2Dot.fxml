@@ -28,9 +28,9 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Draw">
             <items>
-              <MenuItem fx:id="linesOnly" mnemonicParsing="false" onAction="#setLinesOnly" text="Lines Only" />
-                  <MenuItem fx:id="dotsOnly" mnemonicParsing="false" onAction="#setDotsOnly" text="Dots Only" />
-                  <MenuItem fx:id="dotsAndLines" mnemonicParsing="false" onAction="#setDotsAndLines" text="Dots and Lines" />
+              <MenuItem fx:id="linesOnly" disable="true" mnemonicParsing="false" onAction="#setLinesOnly" text="Lines Only" />
+                  <MenuItem fx:id="dotsOnly" disable="true" mnemonicParsing="false" onAction="#setDotsOnly" text="Dots Only" />
+                  <MenuItem fx:id="dotsAndLines" disable="true" mnemonicParsing="false" onAction="#setDotsAndLines" text="Dots and Lines" />
             </items>
           </Menu>
         </menus>

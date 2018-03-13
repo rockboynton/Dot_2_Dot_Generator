@@ -10,7 +10,6 @@ package boyntonrl;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 
 import java.io.File;
@@ -19,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Holds a list of Dots that describe a picture.
@@ -32,14 +29,13 @@ public class Picture {
      */
     public static final int DOT_SIZE = 5;
 
-    private static final Logger LOGGER = Dot2Dot.LOGGER;
-    private ArrayList<Dot> dots = new ArrayList<>();
+    private List<Dot> dots = new ArrayList<>();
 
     /**
      *  Loads all of the dots from a .dot file.
      * @param file the dot file to load in dots
      */
-    public void load(File file) {
+    public void load(File file) throws IOException{
         double x;
         double y;
 
@@ -49,20 +45,19 @@ public class Picture {
                 // second element is the y value
                 List<String> xAndY = Arrays.asList(fileIn.nextLine().split(","));
                 if (xAndY.size() != 2) { // This would mean file is formatted incorrectly
-                    throw new NumberFormatException();
+                    throw new NumberFormatException("File is formatted incorrectly: Must have " +
+                            "only X and Y coordinates");
+                }
+                if (Double.valueOf(xAndY.get(0)) < 0 || Double.valueOf(xAndY.get(0)) > 1 ||
+                        Double.valueOf(xAndY.get(1)) < 0 || Double.valueOf(xAndY.get(1)) > 1) {
+                    throw new NumberFormatException("File is formatted incorrectly: point " +
+                            "coordinates not between 0 and 1");
                 }
                 x = Double.valueOf(xAndY.get(0)) * Dot2DotController.CANVAS_WIDTH;
                 y = Math.abs(Double.valueOf(xAndY.get(1)) * Dot2DotController.CANVAS_HEIGHT -
-                        Dot2DotController.CANVAS_HEIGHT); // not sure why the Y values are inverted
+                        Dot2DotController.CANVAS_HEIGHT);
                 dots.add(new Dot(x, y));
-                LOGGER.info("User successfully loaded image" + file.getPath());
             }
-        } catch (IOException ioe) {
-            showReadFailureAlert();
-            LOGGER.log(Level.WARNING, "Could not open .dot file", ioe);
-        } catch (NumberFormatException nfe) {
-            showReadFailureAlert();
-            LOGGER.log(Level.WARNING, "Could not open .dot file", nfe);
         }
     }
 
@@ -87,25 +82,26 @@ public class Picture {
      */
     public void drawLines(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        Dot dot1;
+        Dot dot2;
 
         gc.beginPath();
         for (int i = 0; i < dots.size() - 1; i++) {
-            Dot dot1 = dots.get(i);
-            Dot dot2 = dots.get(i + 1);
-            gc.moveTo(dot1.getX(), dot1.getY());
-            gc.lineTo(dot2.getX(), dot2.getY());
+            dot1 = dots.get(i);
+            dot2 = dots.get(i + 1);
+            drawLine(gc, dot1, dot2);
         }
+        // draw final line from the last dot to the first
+        dot1 = dots.get(dots.size() - 1);
+        dot2 = dots.get(0);
+        drawLine(gc, dot1, dot2);
+
         gc.closePath();
         gc.stroke();
-
     }
 
-    private static void showReadFailureAlert() {
-        Alert readFailureAlert = new Alert(Alert.AlertType.ERROR, "Error: Could not " +
-                "read dots from specified file. File may be corrupt ");
-        readFailureAlert.setTitle("Error Dialog");
-        readFailureAlert.setHeaderText("Read Failure");
-        readFailureAlert.showAndWait();
+    private void drawLine(GraphicsContext gc, Dot dot1, Dot dot2) {
+        gc.moveTo(dot1.getX(), dot1.getY());
+        gc.lineTo(dot2.getX(), dot2.getY());
     }
-
 }

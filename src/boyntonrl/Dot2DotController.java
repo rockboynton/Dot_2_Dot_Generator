@@ -11,17 +11,24 @@ package boyntonrl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Dot2DotController class for the Dot 2 Dot Generator application
  */
-public class Dot2DotController {
+public class Dot2DotController implements Initializable{
 
     private static final Logger LOGGER = Dot2Dot.LOGGER;
 
@@ -39,6 +46,12 @@ public class Dot2DotController {
 
     @FXML
     private Canvas canvas;
+    @FXML
+    private MenuItem linesOnly;
+    @FXML
+    private MenuItem dotsOnly;
+    @FXML
+    private MenuItem dotsAndLines;
 
     @FXML
     private void open(ActionEvent e) {
@@ -50,9 +63,21 @@ public class Dot2DotController {
         if (file != null) {
             canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
             picture = new Picture();
-            picture.load(file);
-            picture.drawLines(canvas);
-            picture.drawDots(canvas);
+            try {
+                picture.load(file);
+                picture.drawLines(canvas);
+                picture.drawDots(canvas);
+                LOGGER.info("User successfully loaded image" + file.getPath());
+                linesOnly.setDisable(false);
+                dotsOnly.setDisable(false);
+                dotsAndLines.setDisable(false);
+            } catch (IOException ioe) {
+                showReadFailureAlert();
+                LOGGER.log(Level.WARNING, "Could not open .dot file: " + file.getPath(), ioe);
+            } catch (NumberFormatException nfe) {
+                showReadFailureAlert();
+                LOGGER.log(Level.WARNING, "Could not open .dot file: " + file.getPath(), nfe);
+            }
         } else {
             LOGGER.log(Level.INFO, "User canceled loading image");
         }
@@ -66,26 +91,33 @@ public class Dot2DotController {
 
     @FXML
     private void setLinesOnly(ActionEvent e) {
-        if (picture != null) {
-            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            picture.drawLines(canvas);
-        }
+        canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        picture.drawLines(canvas);
     }
 
     @FXML
     private void setDotsOnly(ActionEvent e) {
-        if (picture != null) {
-            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            picture.drawDots(canvas);
-        }
+        canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        picture.drawDots(canvas);
     }
 
     @FXML
     private void setDotsAndLines(ActionEvent e) {
-        if (picture != null) {
-            canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            picture.drawDots(canvas);
-            picture.drawLines(canvas);
-        }
+        canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        picture.drawDots(canvas);
+        picture.drawLines(canvas);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        picture = new Picture();
+    }
+
+    private static void showReadFailureAlert() {
+        Alert readFailureAlert = new Alert(Alert.AlertType.ERROR, "Error: Could not " +
+                "read dots from specified file. File may be corrupt ");
+        readFailureAlert.setTitle("Error Dialog");
+        readFailureAlert.setHeaderText("Read Failure");
+        readFailureAlert.showAndWait();
     }
 }
