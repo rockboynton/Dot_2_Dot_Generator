@@ -18,9 +18,9 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,7 +62,7 @@ public class Dot2DotController implements Initializable{
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            picture = new Picture();
+            picture = new Picture(new ArrayList<>());
             try {
                 picture.load(file);
                 picture.drawLines(canvas);
@@ -108,9 +108,14 @@ public class Dot2DotController implements Initializable{
         picture.drawLines(canvas);
     }
 
+    /**
+     * Initializes a blank picture with an empty list od Dots
+     * @param location URL location
+     * @param resources ResourceBundle
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        picture = new Picture();
+        picture = new Picture(new ArrayList<>());
     }
 
     private static void showReadFailureAlert() {

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Dot 2 Dot Generator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Dot_2_Dot_Generator_jar</output-path>
+    <root id="archive" name="Dot 2 Dot Generator.jar">
+      <element id="module-output" name="Dot 2 Dot Generator" />
+    </root>
+  </artifact>
+</component>

@@ -32,4 +32,26 @@ public class Dot {
     public double getY() {
         return y;
     }
+
+    /**
+     * Returns the critical value for the dot based on the neighboring dots that are passed to
+     * the method. The critical value of dot 2 is calculated as the sum of the distances from
+     * dot 2 to dot 1 and from dot 2 to dot 3 minus the distance from dot 1 to dot 3, i.e.,
+     * cv2=d12+d23−d13 where cvy is the critical value for dot y and dxz are the distances
+     * between them.
+     * @param previous dot1
+     * @param next dot2
+     * @return critical value of the dot
+     */
+    public double calculateCriticalValue(Dot previous, Dot next) {
+        return calculateDistance(previous, this) + calculateDistance(this, next) -
+                calculateDistance(previous, next);
+    }
+
+    private static double calculateDistance(Dot dotA, Dot dotB) {
+        double xDistance = dotB.getX() - dotA.getX();
+        double yDistance = dotB.getY() - dotA.getY();
+        double distance = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+        return Math.abs(distance);
+    }
 }
