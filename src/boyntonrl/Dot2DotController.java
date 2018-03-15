@@ -21,10 +21,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,10 +42,13 @@ public class Dot2DotController implements Initializable{
      */
     public static final int CANVAS_HEIGHT = 600;
 
+    private Picture originalPicture;
     private Picture picture;
 
     @FXML
     private Canvas canvas;
+    @FXML
+    private MenuItem reloadOriginal;
     @FXML
     private MenuItem linesOnly;
     @FXML
@@ -69,7 +69,7 @@ public class Dot2DotController implements Initializable{
             try {
                 picture.save(file);
             } catch (IOException ioe) {
-                shoeSaveFailureAlert();
+                showSaveFailureAlert();
                 LOGGER.log(Level.WARNING, "Could not save .dot file: " + file.getPath(), ioe);
             }
         } else {
@@ -86,16 +86,18 @@ public class Dot2DotController implements Initializable{
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             canvas.getGraphicsContext2D().clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-            picture = new Picture(new ArrayList<>());
+            originalPicture = new Picture(new ArrayList<>());
             try {
-                picture.load(file);
-                picture.drawLines(canvas);
-                picture.drawDots(canvas);
+                originalPicture.load(file);
+                originalPicture.drawLines(canvas);
+                originalPicture.drawDots(canvas);
                 LOGGER.info("User successfully loaded image" + file.getPath());
+                reloadOriginal.setDisable(false);
                 linesOnly.setDisable(false);
                 dotsOnly.setDisable(false);
                 dotsAndLines.setDisable(false);
                 removeDots.setDisable(false);
+                picture = originalPicture;
             } catch (IOException ioe) {
                 showReadFailureAlert();
                 LOGGER.log(Level.WARNING, "Could not open .dot file: " + file.getPath(), ioe);
@@ -112,6 +114,11 @@ public class Dot2DotController implements Initializable{
     private void close(ActionEvent e) {
         LOGGER.log(Level.INFO, "User closed the program");
         Platform.exit();
+    }
+
+    @FXML
+    private void reloadOriginal(ActionEvent e) {
+        picture = originalPicture;
     }
 
     @FXML
@@ -135,29 +142,34 @@ public class Dot2DotController implements Initializable{
 
     @FXML
     private void removeDots(ActionEvent e) {
-        TextInputDialog dialog = new TextInputDialog("50");
-        dialog.setTitle("Remove Dots");
-        dialog.setHeaderText("How Many Dots Would You Like To Remain?");
-        dialog.setContentText("Number of Dots:");
-        Optional<String> result = dialog.showAndWait();
+        Optional<String> result = getNumDotsToRemove();
         result.ifPresent(numDots -> {
             try {
+                picture = new Picture(originalPicture, new ArrayList<>());
                 picture.removeDots(Integer.parseInt(numDots));
-                setDotsOnly(e);
+                setDotsAndLines(e);
             } catch (IllegalArgumentException iae) {
                 showInvalidNumRemainingDotsAlert();
             }
         });
     }
 
+    private Optional<String> getNumDotsToRemove() {
+        TextInputDialog dialog = new TextInputDialog("50");
+        dialog.setTitle("Remove Dots");
+        dialog.setHeaderText("How Many Dots Would You Like To Remain?");
+        dialog.setContentText("Number of Dots:");
+        return dialog.showAndWait();
+    }
+
     /**
-     * Initializes a blank picture with an empty list od Dots
+     * Initializes a blank originalPicture with an empty list od Dots
      * @param location URL location
      * @param resources ResourceBundle
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        picture = new Picture(new ArrayList<>());
+        originalPicture = new Picture(new ArrayList<>());
     }
 
     private static void showReadFailureAlert() {
@@ -168,7 +180,7 @@ public class Dot2DotController implements Initializable{
         readFailureAlert.showAndWait();
     }
 
-    private static void shoeSaveFailureAlert() {
+    private static void showSaveFailureAlert() {
         Alert saveFailureAlert = new Alert(Alert.AlertType.ERROR, "Error: Could not " +
                 "save dots to specified file.");
         saveFailureAlert.setTitle("Error Dialog");

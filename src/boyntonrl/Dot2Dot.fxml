@@ -29,6 +29,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Draw">
             <items>
+                  <MenuItem fx:id="reloadOriginal" disable="true" mnemonicParsing="false" onAction="#reloadOriginal" text="Reload Original" />
               <MenuItem fx:id="linesOnly" disable="true" mnemonicParsing="false" onAction="#setLinesOnly" text="Lines Only" />
                   <MenuItem fx:id="dotsOnly" disable="true" mnemonicParsing="false" onAction="#setDotsOnly" text="Dots Only" />
                   <MenuItem fx:id="dotsAndLines" disable="true" mnemonicParsing="false" onAction="#setDotsAndLines" text="Dots and Lines" />

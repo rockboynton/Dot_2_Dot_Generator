@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -48,7 +47,8 @@ public class Picture {
      * @param emptyList list copied from original list to store dots for the picture
      */
     public Picture(Picture original, List<Dot> emptyList) {
-
+        emptyList.addAll(original.dots);
+        this.dots = emptyList;
     }
 
     /**
@@ -167,8 +167,8 @@ public class Picture {
                     }
                 }
                 // calculate last dot's critical value
-                currentCriticalValue = dots.get(dots.size() - 1).calculateCriticalValue(dots.get(dots.size() - 2), dots.
-                        get(0));
+                currentCriticalValue = dots.get(dots.size() - 1).calculateCriticalValue(dots.get(
+                        dots.size() - 2), dots.get(0));
                 if (currentCriticalValue < lowestCriticalValue) {
                     lowestCriticalIndex = dots.size() - 1;
                 } // doing it this way handles the edge cases saving two conditional checks every
