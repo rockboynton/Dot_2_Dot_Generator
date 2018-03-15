@@ -22,6 +22,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+                  <MenuItem fx:id="save" mnemonicParsing="false" onAction="#save" text="Save" />
               <MenuItem fx:id="openMenuItem" mnemonicParsing="false" onAction="#open" text="Open" />
                   <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
@@ -31,6 +32,7 @@
               <MenuItem fx:id="linesOnly" disable="true" mnemonicParsing="false" onAction="#setLinesOnly" text="Lines Only" />
                   <MenuItem fx:id="dotsOnly" disable="true" mnemonicParsing="false" onAction="#setDotsOnly" text="Dots Only" />
                   <MenuItem fx:id="dotsAndLines" disable="true" mnemonicParsing="false" onAction="#setDotsAndLines" text="Dots and Lines" />
+                  <MenuItem fx:id="removeDots" disable="true" mnemonicParsing="false" onAction="#removeDots" text="Remove Dots" />
             </items>
           </Menu>
         </menus>

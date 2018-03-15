@@ -154,7 +154,7 @@ public class Picture {
             while (dots.size() > numberDesired) {
                 // calculate first dot's critical value; first dot will always initially have the
                 // lowest critical value
-                lowestCriticalValue = dots.get(0).calculateCriticalValue(dots.get(dots.size()),
+                lowestCriticalValue = dots.get(0).calculateCriticalValue(dots.get(dots.size() - 1),
                         dots.get(1));
                 lowestCriticalIndex = 0;
                 // calculate rest of dot's critical values except last dot
