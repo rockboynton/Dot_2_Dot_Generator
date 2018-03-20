@@ -13,15 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -149,6 +148,7 @@ public class Dot2DotController implements Initializable {
         Optional<String> result = getNumDotsToRemove();
         result.ifPresent(numDots -> {
             try {
+                showListAndRemovalAlgoALert();
                 picture = new Picture(originalPicture, new ArrayList<>());
                 picture.removeDots(Integer.parseInt(numDots));
                 setDotsAndLines(e);
@@ -198,5 +198,53 @@ public class Dot2DotController implements Initializable {
         invalidNumRemainingDots.setTitle("Error Dialog");
         invalidNumRemainingDots.setHeaderText("Remove Dots Failure");
         invalidNumRemainingDots.showAndWait();
+    }
+
+//    private static void showListChoiceAlert() {
+//        Alert listChoiceAlert = new Alert(Alert.AlertType.CONFIRMATION);
+//        listChoiceAlert.setTitle("List Type");
+//        listChoiceAlert.setHeaderText("Which list type would you like to use?");
+//        listChoiceAlert.setContentText("Choose your option.");
+//
+//        ButtonType arrayListIndexing = new ButtonType("ArrayList Index Only Methods");
+//        ButtonType arrayListIterator = new ButtonType("ArrayList Iterator Only Methods");
+//        ButtonType linkedListIndexing = new ButtonType("LinkedList Index Only Methods");
+//        ButtonType linkedListIterator = new ButtonType("LinkedList Iterator Only Methods");
+//        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+//
+//        listChoiceAlert.getButtonTypes().setAll(arrayListIndexing, arrayListIterator,
+//                linkedListIndexing, linkedListIterator, cancelButton);
+//
+//        Optional<ButtonType> result = listChoiceAlert.showAndWait();
+//        if (result.get() == arrayListIndexing){
+//            // ... user chose "One"
+//        } else if (result.get() == arrayListIterator) {
+//            // ... user chose "Two"
+//        } else if (result.get() == linkedListIndexing) {
+//            // ... user chose "Two"
+//        } else if (result.get() == linkedListIterator) {
+//            // ... user chose "Two"
+//        } else {
+//            // do nothing
+//        }
+//    }
+
+    private static String showListAndRemovalAlgoALert() {
+        List<String> choices = new ArrayList<>();
+        choices.add("ArrayList Index Only Methods");
+        choices.add("ArrayList Iterator Only Methods");
+        choices.add("LinkedList Index Only Methods");
+        choices.add("LinkedList Iterator Only Methods");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("ArrayList Index Only Methods",
+                choices);
+        dialog.setTitle("List Type And Removal Algorithm");
+        dialog.setHeaderText("Which list type would you like to use?");
+        dialog.setContentText("Choose your option: ");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(letter -> System.out.println("Your choice: " + letter));
+        return null;
     }
 }
