@@ -19,10 +19,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -148,9 +145,23 @@ public class Dot2DotController implements Initializable {
         Optional<String> result = getNumDotsToRemove();
         result.ifPresent(numDots -> {
             try {
-                showListAndRemovalAlgoALert();
-                picture = new Picture(originalPicture, new ArrayList<>());
-                picture.removeDots(Integer.parseInt(numDots));
+                Optional<String> listAndAlgoChoice = showListAndRemovalAlgoAlert();
+                listAndAlgoChoice.ifPresent(choice -> {
+                    long time;
+                    if (choice.equals("ArrayList Index Only Methods")) {
+                        picture = new Picture(originalPicture, new ArrayList<>());
+                        time = picture.removeDots(Integer.parseInt(numDots));
+                    } else if (choice.equals("LinkedList Index Only Methods")) {
+                        picture = new Picture(originalPicture, new LinkedList<>());
+                        time = picture.removeDots(Integer.parseInt(numDots));
+                    } else if (choice.equals("ArrayList Iterator Only Methods")) {
+                        picture = new Picture(originalPicture, new ArrayList<>());
+                        time = picture.removeDots2(Integer.parseInt(numDots));
+                    } else if (choice.equals("LinkedList Iterator Only Methods")) {
+                        picture = new Picture(originalPicture, new LinkedList<>());
+                        time = picture.removeDots2(Integer.parseInt(numDots));
+                    }
+                });
                 setDotsAndLines(e);
             } catch (IllegalArgumentException iae) {
                 showInvalidNumRemainingDotsAlert();
@@ -229,7 +240,7 @@ public class Dot2DotController implements Initializable {
 //        }
 //    }
 
-    private static String showListAndRemovalAlgoALert() {
+    private static Optional<String> showListAndRemovalAlgoAlert() {
         List<String> choices = new ArrayList<>();
         choices.add("ArrayList Index Only Methods");
         choices.add("ArrayList Iterator Only Methods");
@@ -242,9 +253,6 @@ public class Dot2DotController implements Initializable {
         dialog.setHeaderText("Which list type would you like to use?");
         dialog.setContentText("Choose your option: ");
 
-        // Traditional way to get the response value.
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(letter -> System.out.println("Your choice: " + letter));
-        return null;
+        return dialog.showAndWait();
     }
 }

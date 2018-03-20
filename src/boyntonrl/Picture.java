@@ -141,11 +141,15 @@ public class Picture {
     /**
      * Removes all but the numberDesired most critical dots. If the picture does not have more
      * than numberDesired dots, the method returns without changing the picture. If numberDesired
-     * < 3, an IllegalArgumentException is thrown.
+     * < 3, an IllegalArgumentException is thrown. This method uses index based methods to
+     * access elements of the list.
      * @param numberDesired amount of dots to be left in the picture after the method is called.
+     * @return The time this method took to complete (in nanoseconds)
      * @throws IllegalArgumentException if numberDesired < 3
      */
-    public void removeDots(int numberDesired) throws IllegalArgumentException{
+    public long removeDots(int numberDesired) throws IllegalArgumentException{
+        long startTime = System.nanoTime();
+        long endTime;
         if (numberDesired < 3) {
             throw new IllegalArgumentException("The number of dots required has to be greater " +
                     "than 2");
@@ -179,10 +183,26 @@ public class Picture {
                 dots.remove(lowestCriticalIndex);
             }
         }
+        endTime = System.nanoTime();
+        return endTime - startTime;
     }
 
     private void drawLine(GraphicsContext gc, Dot dot1, Dot dot2) {
         gc.moveTo(dot1.getX(), dot1.getY());
         gc.lineTo(dot2.getX(), dot2.getY());
+    }
+
+    /**
+     * /**
+     * Removes all but the numberDesired most critical dots. If the picture does not have more
+     * than numberDesired dots, the method returns without changing the picture. If numberDesired
+     * < 3, an IllegalArgumentException is thrown. Makes use of Iterators to traverse list of
+     * dots. This method does not use any index based methods to access elements of the list.
+     * @param numberDesired amount of dots to be left in the picture after the method is called.
+     * @return The time this method took to complete (in nanoseconds)
+     * @throws IllegalArgumentException if numberDesired < 3
+     */
+    public long removeDots2(int numberDesired) {
+        return 0;
     }
 }
