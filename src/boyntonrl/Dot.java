@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 1 - Dot 2 Dot Generator
+ * Lab 2 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/6/2018
+ * Created: 3/15/2018
  */
 
 package boyntonrl;

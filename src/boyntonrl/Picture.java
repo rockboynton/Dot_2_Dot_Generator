@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 1 - Dot 2 Dot Generator
+ * Lab 2 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/6/2018
+ * Created: 3/15/2018
  */
 
 package boyntonrl;
@@ -130,8 +130,10 @@ public class Picture {
     public void save(File file) throws IOException{
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
             for (Dot dot : dots) {
-                writer.println(dot.getX() + "," + dot.getY()); // TODO make sure the last
-                // line (blank) is compatible
+                // subtract y from 1 to flip the image; divide x and y by the height and width of
+                // the canvas to get values between 0 and 1
+                writer.println((dot.getX() / Dot2DotController.CANVAS_WIDTH) + ","
+                        + (1 - (dot.getY() / Dot2DotController.CANVAS_HEIGHT)));
             }
         }
     }
@@ -143,7 +145,7 @@ public class Picture {
      * @param numberDesired amount of dots to be left in the picture after the method is called.
      * @throws IllegalArgumentException if numberDesired < 3
      */
-    void removeDots(int numberDesired) throws IllegalArgumentException{
+    public void removeDots(int numberDesired) throws IllegalArgumentException{
         if (numberDesired < 3) {
             throw new IllegalArgumentException("The number of dots required has to be greater " +
                     "than 2");

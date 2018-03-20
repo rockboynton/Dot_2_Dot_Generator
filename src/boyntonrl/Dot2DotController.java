@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 1 - Dot 2 Dot Generator
+ * Lab 2 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/6/2018
+ * Created: 3/15/2018
  */
 
 package boyntonrl;
@@ -21,26 +21,28 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Dot2DotController class for the Dot 2 Dot Generator application
  */
-public class Dot2DotController implements Initializable{
+public class Dot2DotController implements Initializable {
 
     private static final Logger LOGGER = Dot2Dot.LOGGER;
 
     /**
      * Width of canvas
      */
-    public static final int CANVAS_WIDTH = 600;
+    public static final int CANVAS_WIDTH = 770;
 
     /**
      * Height of canvas
      */
-    public static final int CANVAS_HEIGHT = 600;
+    public static final int CANVAS_HEIGHT = 770;
 
     private Picture originalPicture;
     private Picture picture;
@@ -68,6 +70,7 @@ public class Dot2DotController implements Initializable{
         if (file != null) {
             try {
                 picture.save(file);
+                LOGGER.info("User successfully saved file");
             } catch (IOException ioe) {
                 showSaveFailureAlert();
                 LOGGER.log(Level.WARNING, "Could not save .dot file: " + file.getPath(), ioe);
@@ -119,6 +122,7 @@ public class Dot2DotController implements Initializable{
     @FXML
     private void reloadOriginal(ActionEvent e) {
         picture = originalPicture;
+        setDotsAndLines(e);
     }
 
     @FXML

@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 1 - Dot 2 Dot Generator
+ * Lab 2 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/6/2018
+ * Created: 3/15/2018
  */
 
 package boyntonrl;
@@ -32,8 +32,15 @@ public class Dot2Dot extends Application {
      */
     public static final Logger LOGGER = Logger.getLogger(Dot2Dot.class.getName());
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 600;
+    /**
+     * Width of Stage
+     */
+    public static final int WIDTH = 800;
+
+    /**
+     * Height of Stage
+     */
+    public static final int HEIGHT = 800;
 
     /**
      * Sets up the primary stage and a logger
