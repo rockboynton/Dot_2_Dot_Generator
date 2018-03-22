@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.canvas.Canvas?>
@@ -15,7 +16,7 @@
     <RowConstraints maxHeight="800.0" minHeight="10.0" prefHeight="775.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <MenuBar prefHeight="30.0" prefWidth="600.0">
+      <MenuBar maxWidth="807.0" prefHeight="27.0" prefWidth="807.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -36,5 +37,10 @@
         </menus>
       </MenuBar>
       <Canvas fx:id="canvas" height="770.0" width="800.0" GridPane.rowIndex="1" />
+      <Label fx:id="timeLabel" text="Time to Remove Dots: " visible="false" GridPane.halignment="RIGHT">
+         <GridPane.margin>
+            <Insets right="10.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </GridPane>

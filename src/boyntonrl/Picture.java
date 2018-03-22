@@ -16,9 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Holds a list of Dots that describe a picture.
@@ -203,6 +201,47 @@ public class Picture {
      * @throws IllegalArgumentException if numberDesired < 3
      */
     public long removeDots2(int numberDesired) {
-        return 0;
+        long startTime = System.nanoTime();
+        long endTime;
+        if (numberDesired < 3) {
+            throw new IllegalArgumentException("The number of dots required has to be greater " +
+                    "than 2");
+        } else {
+            // Use Collection<Dot> reference to point to list of dots to have the compiler throw
+            // an error if trying to use any index-based methods
+//            Collection<Dot> dots = this.dots;
+
+            ListIterator<Dot> itr = dots.listIterator();
+            double lowestCriticalValue;
+            double currentCriticalValue;
+            Dot leastCriticalDot;
+            while (dots.size() > numberDesired) {
+                // calculate first dot's critical value; first dot will always initially have the
+                // lowest critical value
+                leastCriticalDot = itr.next();
+                lowestCriticalValue = leastCriticalDot.calculateCriticalValue(dots.get(dots.size() - 1), dots
+                        .get(1));
+                // calculate rest of dot's critical values except last dot
+                for (Dot dot : dots) {
+                    currentCriticalValue = dot.calculateCriticalValue(itr.previous(), itr.next().next());
+                    if (currentCriticalValue < lowestCriticalValue) {
+                        lowestCriticalValue = currentCriticalValue;
+                        leastCriticalDot = dot;
+                    }
+                }
+                // calculate last dot's critical value
+                currentCriticalValue = dots.get(dots.size() - 1).calculateCriticalValue(dots.get(
+                        dots.size() - 2), dots.get(0));
+                if (currentCriticalValue < lowestCriticalValue) {
+                    leastCriticalDot = itr.next();
+                } // doing it this way handles the edge cases saving two conditional checks every
+                // loop
+
+                dots.remove(leastCriticalDot);
+            }
+        }
+        endTime = System.nanoTime();
+        return endTime - startTime;
+//        return 0;
     }
 }

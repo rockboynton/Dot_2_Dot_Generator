@@ -13,13 +13,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.sql.Time;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +40,7 @@ import java.util.logging.Logger;
 public class Dot2DotController implements Initializable {
 
     private static final Logger LOGGER = Dot2Dot.LOGGER;
+    private DecimalFormat df = new DecimalFormat("");
 
     /**
      * Width of canvas
@@ -55,6 +67,8 @@ public class Dot2DotController implements Initializable {
     private MenuItem dotsAndLines;
     @FXML
     private MenuItem removeDots;
+    @FXML
+    private Label timeLabel;
 
     @FXML
     private void save(ActionEvent e) {
@@ -97,6 +111,7 @@ public class Dot2DotController implements Initializable {
                 dotsAndLines.setDisable(false);
                 removeDots.setDisable(false);
                 picture = originalPicture;
+                timeLabel.setVisible(false);
             } catch (IOException ioe) {
                 showReadFailureAlert();
                 LOGGER.log(Level.WARNING, "Could not open .dot file: " + file.getPath(), ioe);
@@ -147,7 +162,7 @@ public class Dot2DotController implements Initializable {
             try {
                 Optional<String> listAndAlgoChoice = showListAndRemovalAlgoAlert();
                 listAndAlgoChoice.ifPresent(choice -> {
-                    long time;
+                    long time = 0;
                     if (choice.equals("ArrayList Index Only Methods")) {
                         picture = new Picture(originalPicture, new ArrayList<>());
                         time = picture.removeDots(Integer.parseInt(numDots));
@@ -161,8 +176,12 @@ public class Dot2DotController implements Initializable {
                         picture = new Picture(originalPicture, new LinkedList<>());
                         time = picture.removeDots2(Integer.parseInt(numDots));
                     }
+                    // convert millisecond time to seconds
+                    timeLabel.setText("Time to Remove Dots: " + time / Math.pow(10, 9) + " s");
+                    // TODO is this suppossed to be in hours and minutes format ?
+                    timeLabel.setVisible(true);
+                    setDotsAndLines(e);
                 });
-                setDotsAndLines(e);
             } catch (IllegalArgumentException iae) {
                 showInvalidNumRemainingDotsAlert();
             }
