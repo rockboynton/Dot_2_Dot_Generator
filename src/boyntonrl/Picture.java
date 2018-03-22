@@ -211,31 +211,45 @@ public class Picture {
             // an error if trying to use any index-based methods
 //            Collection<Dot> dots = this.dots;
 
-            ListIterator<Dot> itr = dots.listIterator();
+            Iterator<Dot> itr = dots.iterator();
             double lowestCriticalValue;
             double currentCriticalValue;
             Dot leastCriticalDot;
+            Dot previousDot;
+            Dot nextDot = null;
+            Dot firstDot;
+            Dot secondDot;
+            Dot lastDot;
+            Dot currentDot = null;
+            Dot secondLastDot;
             while (dots.size() > numberDesired) {
-                // calculate first dot's critical value; first dot will always initially have the
-                // lowest critical value
-                leastCriticalDot = itr.next();
-                lowestCriticalValue = leastCriticalDot.calculateCriticalValue(dots.get(dots.size() - 1), dots
-                        .get(1));
-                // calculate rest of dot's critical values except last dot
-                for (Dot dot : dots) {
-                    currentCriticalValue = dot.calculateCriticalValue(itr.previous(), itr.next().next());
+                firstDot = itr.next();
+                secondDot = itr.next();
+                lowestCriticalValue = secondDot.calculateCriticalValue(firstDot, itr.next());
+                leastCriticalDot = secondDot;
+                previousDot = secondDot;
+                // calculate rest of dot's critical values except last and first dots
+                for (Dot dot : dots.subList(2, dots.size() - 1)) {
+                    currentDot = dot;
+                    nextDot = itr.next();
+                    currentCriticalValue = currentDot.calculateCriticalValue(previousDot, nextDot);
                     if (currentCriticalValue < lowestCriticalValue) {
                         lowestCriticalValue = currentCriticalValue;
-                        leastCriticalDot = dot;
+                        leastCriticalDot = currentDot;
                     }
+                    previousDot = currentDot;
                 }
                 // calculate last dot's critical value
-                currentCriticalValue = dots.get(dots.size() - 1).calculateCriticalValue(dots.get(
-                        dots.size() - 2), dots.get(0));
+                secondLastDot = currentDot;
+                lastDot = nextDot;
+                currentCriticalValue = lastDot.calculateCriticalValue(secondLastDot, firstDot);
                 if (currentCriticalValue < lowestCriticalValue) {
-                    leastCriticalDot = itr.next();
-                } // doing it this way handles the edge cases saving two conditional checks every
-                // loop
+                    leastCriticalDot = lastDot;
+                }
+                currentCriticalValue = firstDot.calculateCriticalValue(lastDot, secondDot);
+                if (currentCriticalValue < lowestCriticalValue) {
+                    leastCriticalDot = firstDot;
+                }
 
                 dots.remove(leastCriticalDot);
             }
