@@ -211,7 +211,7 @@ public class Picture {
             // an error if trying to use any index-based methods
 //            Collection<Dot> dots = this.dots;
 
-            Iterator<Dot> itr = dots.iterator();
+            Iterator<Dot> itr;
             double lowestCriticalValue;
             double currentCriticalValue;
             Dot leastCriticalDot;
@@ -223,8 +223,12 @@ public class Picture {
             Dot currentDot = null;
             Dot secondLastDot;
             while (dots.size() > numberDesired) {
+                itr = dots.iterator();
                 firstDot = itr.next();
                 secondDot = itr.next();
+                // calculate 2 to n-1 Dot's critical values (where n is the size size of the list
+                // of dots. Then calculate the first and last dots' critical value.
+                // set initial lowest critical value
                 lowestCriticalValue = secondDot.calculateCriticalValue(firstDot, itr.next());
                 leastCriticalDot = secondDot;
                 previousDot = secondDot;
@@ -239,11 +243,12 @@ public class Picture {
                     }
                     previousDot = currentDot;
                 }
-                // calculate last dot's critical value
                 secondLastDot = currentDot;
                 lastDot = nextDot;
+                // calculate last dot's critical value
                 currentCriticalValue = lastDot.calculateCriticalValue(secondLastDot, firstDot);
                 if (currentCriticalValue < lowestCriticalValue) {
+                    lowestCriticalValue = currentCriticalValue;
                     leastCriticalDot = lastDot;
                 }
                 currentCriticalValue = firstDot.calculateCriticalValue(lastDot, secondDot);
