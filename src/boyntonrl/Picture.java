@@ -16,7 +16,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Holds a list of Dots that describe a picture.
@@ -261,6 +264,5 @@ public class Picture {
         }
         endTime = System.nanoTime();
         return endTime - startTime;
-//        return 0;
     }
 }

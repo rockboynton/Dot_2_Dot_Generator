@@ -23,7 +23,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -176,9 +175,8 @@ public class Dot2DotController implements Initializable {
                         picture = new Picture(originalPicture, new LinkedList<>());
                         time = picture.removeDots2(Integer.parseInt(numDots));
                     }
-                    // convert millisecond time to seconds
-                    timeLabel.setText("Time to Remove Dots: " + time / Math.pow(10, 9) + " s");
-                    // TODO is this suppossed to be in hours and minutes format ?
+                    // convert nanosecond time to hh:mm:ss.sss format
+                    timeLabel.setText("Time to Remove Dots: " + formatTime(time));
                     timeLabel.setVisible(true);
                     setDotsAndLines(e);
                 });
@@ -230,35 +228,6 @@ public class Dot2DotController implements Initializable {
         invalidNumRemainingDots.showAndWait();
     }
 
-//    private static void showListChoiceAlert() {
-//        Alert listChoiceAlert = new Alert(Alert.AlertType.CONFIRMATION);
-//        listChoiceAlert.setTitle("List Type");
-//        listChoiceAlert.setHeaderText("Which list type would you like to use?");
-//        listChoiceAlert.setContentText("Choose your option.");
-//
-//        ButtonType arrayListIndexing = new ButtonType("ArrayList Index Only Methods");
-//        ButtonType arrayListIterator = new ButtonType("ArrayList Iterator Only Methods");
-//        ButtonType linkedListIndexing = new ButtonType("LinkedList Index Only Methods");
-//        ButtonType linkedListIterator = new ButtonType("LinkedList Iterator Only Methods");
-//        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-//
-//        listChoiceAlert.getButtonTypes().setAll(arrayListIndexing, arrayListIterator,
-//                linkedListIndexing, linkedListIterator, cancelButton);
-//
-//        Optional<ButtonType> result = listChoiceAlert.showAndWait();
-//        if (result.get() == arrayListIndexing){
-//            // ... user chose "One"
-//        } else if (result.get() == arrayListIterator) {
-//            // ... user chose "Two"
-//        } else if (result.get() == linkedListIndexing) {
-//            // ... user chose "Two"
-//        } else if (result.get() == linkedListIterator) {
-//            // ... user chose "Two"
-//        } else {
-//            // do nothing
-//        }
-//    }
-
     private static Optional<String> showListAndRemovalAlgoAlert() {
         List<String> choices = new ArrayList<>();
         choices.add("ArrayList Index Only Methods");
@@ -273,5 +242,16 @@ public class Dot2DotController implements Initializable {
         dialog.setContentText("Choose your option: ");
 
         return dialog.showAndWait();
+    }
+
+    private static String formatTime(final long nsTime) {
+        final long hr = TimeUnit.NANOSECONDS.toHours(nsTime);
+        final long min = TimeUnit.NANOSECONDS.toMinutes(nsTime - TimeUnit.HOURS.toNanos(hr));
+        final long sec = TimeUnit.NANOSECONDS.toSeconds(nsTime - TimeUnit.HOURS.toNanos(hr) -
+                TimeUnit.MINUTES.toNanos(min));
+        final long ms = TimeUnit.NANOSECONDS.toNanos(nsTime - TimeUnit.HOURS.toNanos(hr) -
+                TimeUnit.MINUTES.toNanos(min) - TimeUnit.SECONDS.toNanos(sec));
+        // hh:mm:ss.sss
+        return String.format("%02d:%02d:%02d.%03d", hr, min, sec, ms);
     }
 }
