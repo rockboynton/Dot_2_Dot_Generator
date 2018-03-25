@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 2 - Dot 2 Dot Generator
+ * Lab 3 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/15/2018
+ * Created: 3/25/2018
  */
 
 package boyntonrl;
@@ -148,7 +148,7 @@ public class Picture {
      * @return The time this method took to complete (in nanoseconds)
      * @throws IllegalArgumentException if numberDesired < 3
      */
-    public long removeDots(int numberDesired) throws IllegalArgumentException{
+    public long removeDots(int numberDesired) throws IllegalArgumentException {
         long startTime = System.nanoTime();
         long endTime;
         if (numberDesired < 3) {

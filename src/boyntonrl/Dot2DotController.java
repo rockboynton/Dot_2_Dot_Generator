@@ -1,9 +1,9 @@
 /*
  * CS2852 - 021
  * Spring 2018
- * Lab 2 - Dot 2 Dot Generator
+ * Lab 3 - Dot 2 Dot Generator
  * Name: Rock Boynton
- * Created: 3/15/2018
+ * Created: 3/25/2018
  */
 
 package boyntonrl;
@@ -23,7 +23,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,8 +38,6 @@ import java.util.logging.Logger;
 public class Dot2DotController implements Initializable {
 
     private static final Logger LOGGER = Dot2Dot.LOGGER;
-    private DecimalFormat df = new DecimalFormat("");
-
     /**
      * Width of canvas
      */
@@ -175,7 +172,7 @@ public class Dot2DotController implements Initializable {
                         picture = new Picture(originalPicture, new LinkedList<>());
                         time = picture.removeDots2(Integer.parseInt(numDots));
                     }
-                    // convert nanosecond time to hh:mm:ss.sss format
+                    // convert nanosecond time to hh:mm:ss.sss format and display
                     timeLabel.setText("Time to Remove Dots: " + formatTime(time));
                     timeLabel.setVisible(true);
                     setDotsAndLines(e);
