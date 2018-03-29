@@ -1,0 +1,63 @@
+# Benchmark Results
+
+## Time for [balloon.dot](http://msoe.us/taylor/cs2852/balloon.dot) with **100* desired dots
+
+```
+Indexed ArrayList:      00:00:00.774
+Indexed LinkedList:     00:00:30.816
+Iterated ArrayList:     00:00:00.706
+Iterated LinkedList:    00:00:00.139
+```
+
+## Time for [balloon.dot](http://msoe.us/taylor/cs2852/balloon.dot) with **1000* desired dots
+
+```
+Indexed ArrayList:      00:00:00.732
+Indexed LinkedList:     00:00:30.352
+Iterated ArrayList:     00:00:00.666
+Iterated LinkedList:    00:00:00.127
+```
+
+## Time for [skull.dot](http://msoe.us/taylor/cs2852/skull.dot) with **9000* desired dots
+
+```
+Indexed ArrayList:      00:00:00.117
+Indexed LinkedList:     00:02:09.706
+Iterated ArrayList:     00:00:00.101
+Iterated LinkedList:    00:00:00.181
+```
+
+# Asymptotic Time Complexity Analysis for `removeDots()`
+
+## O(n) &mdash; when using `ArrayList` with **n-1** desired dots
+
+Justification: Outer while loop will only run one time (constant time) when the number of desired
+dots is one less than the original size of the list. get and size are both constant for an
+`ArrayList` so lines 164 and 166 are both constant. i < dots.size() will run n-1 times.
+calculateCriticalValue  is constant and the if statement is constant. Everything else up until
+remove() is constant, while remove is n time. So the asymptotic time complexity for this method
+using `ArrayList` with **n-1** desired dots is O(n).
+
+## O(n^2) &mdash; when using `ArrayList` with **3** desired dots
+
+Justification: Same as `ArrayList` with **n-1** desired dots except the outer loop will now run n - 3
+times instead of 1. And every time that runs, the inner for loop will run with i < dots.size() which
+is also n. So the asymptotic time complexity for this method using `ArrayList` with **3**
+desired dots is O(n^2).
+
+## O(n^2) &mdash; when using `LinkedList` with **n-1** desired dots
+
+Justification: Outer while loop will only run one time (constant time) when the number of desired
+dots is one less than the original size of the list and size() is still constant but get is O(n).
+dots.size() will run n-1 times in the loop and every time that runs, get() will also run n times.
+So the asymptotic time complexity for this method using `LinkedList` with **n-1** desired dots is
+O(n^2).
+
+
+## O(n^3) &mdash; when using `LinkedList` with **3** desired dots
+
+Justification: Same as `LinkedList` with **n-1** desired dots except the outer loop will now run n
+- 3 times instead of 1. Every time that runs, the inner for loop will run with i < dots.size() which
+is also n. And every time that runs, get() wil run n times. So the asymptotic time complexity for
+this method using `LinkedList` with **3** desired dots is O(n^3).
+
